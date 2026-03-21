@@ -47,5 +47,5 @@ jobs:
 
       - name: Atualizar deployment
         run: |
-          oc set image hello-world-node-js/hello-node hello-node=$REGISTRY/$IMAGE_NAME:latest || \
-          oc rollout restart hello-world-node-js/hello-node
+          oc set image deployment/hello-world-node-js hello-node=$REGISTRY/$IMAGE_NAME:latest || \
+          oc rollout restart deployment/hello-world-node-js
