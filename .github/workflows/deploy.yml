@@ -3,6 +3,7 @@ name: Build and Deploy
 on:
   push:
     branches: [ "main" ]
+
 env:
   IMAGE_NAME: hello-node
   REGISTRY: docker.io/joaopedroimorais
@@ -11,7 +12,6 @@ env:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout código
         uses: actions/checkout@v4
@@ -24,11 +24,11 @@ jobs:
 
       - name: Build da imagem
         run: |
-          docker build -t $REGISTRY/$IMAGE_NAME:latest .
+          docker build -t $REGISTRY/$IMAGE_NAME:${{ github.sha }} .
 
       - name: Push da imagem
         run: |
-          docker push $REGISTRY/$IMAGE_NAME:latest
+          docker push $REGISTRY/$IMAGE_NAME:${{ github.sha }}
 
       - name: Install oc
         uses: redhat-actions/oc-installer@v1
@@ -47,5 +47,5 @@ jobs:
 
       - name: Atualizar deployment
         run: |
-          oc set image deployment/hello-world-node-js hello-node=$REGISTRY/$IMAGE_NAME:latest || \
-          oc rollout restart deployment/hello-world-node-js
+          oc set image deployment/hello-world-node-js \
+            hello-node=$REGISTRY/$IMAGE_NAME:${{ github.sha }}
