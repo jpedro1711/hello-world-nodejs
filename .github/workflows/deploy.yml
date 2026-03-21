@@ -48,4 +48,4 @@ jobs:
       - name: Atualizar deployment
         run: |
           oc set image deployment/hello-world-node-js \
-            hello-node=$REGISTRY/$IMAGE_NAME:${{ github.sha }}
+            container=$REGISTRY/$IMAGE_NAME:${{ github.sha }}
