@@ -3,10 +3,10 @@ name: Build and Deploy
 on:
   push:
     branches: [ "main" ]
-
 env:
   IMAGE_NAME: hello-node
   REGISTRY: docker.io/joaopedroimorais
+  OPENSHIFT_PROJECT: joaopedroigeski-dev
 
 jobs:
   build-and-deploy:
@@ -36,10 +36,11 @@ jobs:
             --token=${{ secrets.OPENSHIFT_TOKEN }} \
             --insecure-skip-tls-verify=true
 
-      - name: Selecionar projeto
+      - name: Selecionar projeto sandbox
         run: |
-          oc project ${{ secrets.OPENSHIFT_NAMESPACE }}
+          oc project $OPENSHIFT_PROJECT
 
-      - name: Atualizar deployment (refresh)
+      - name: Atualizar deployment
         run: |
-          oc set image deployment/hello-node hello-node=$REGISTRY/$IMAGE_NAME:latest
+          oc set image deployment/hello-node hello-node=$REGISTRY/$IMAGE_NAME:latest || \
+          oc rollout restart deployment/hello-node
