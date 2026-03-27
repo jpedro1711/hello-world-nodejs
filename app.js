@@ -2,9 +2,10 @@ const express = require('express');
 const app = express();
 
 const PORT = process.env.PORT || 3000;
+const PASSWORD = process.env.db_password;
 
 app.get('/', (req, res) => {
-  res.send('<h2>Hello World, using deploy from code.</h2>');
+  res.send(`<h2>Hello World, using deploy from code. DB PASS is: ${PASSWORD}</h2>`);
 });
 
 app.listen(PORT, () => {
