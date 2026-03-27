@@ -8,6 +8,7 @@ env:
   IMAGE_NAME: hello-node
   REGISTRY: docker.io/joaopedroimorais
   OPENSHIFT_PROJECT: joaopedroigeski-dev
+  is-using-container: false
 
 jobs:
   build-and-deploy:
@@ -46,6 +47,12 @@ jobs:
           oc project $OPENSHIFT_PROJECT
 
       - name: Atualizar deployment
+        if: env.is-using-container
         run: |
           oc set image deployment/hello-world-node-js \
             container=$REGISTRY/$IMAGE_NAME:${{ github.sha }}
+
+      - name: Atualizar deployment
+        if: !env.is-using-container
+        run: |
+          oc start-build hello-js
