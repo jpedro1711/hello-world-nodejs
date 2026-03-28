@@ -5,7 +5,7 @@ const PORT = process.env.PORT || 3000;
 const PASSWORD = process.env.db_password;
 
 app.get('/', (req, res) => {
-  res.send(`<h2>Hello World, using deploy from code. DB PASS is: ${PASSWORD}. Have a nice day!</h2>`);
+  res.send(`<h2>Hello World, using deploy from code. DB PASS is: ${PASSWORD}. <br />Have a nice day!</h2>`);
 });
 
 app.listen(PORT, () => {
